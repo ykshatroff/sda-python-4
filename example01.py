@@ -1,4 +1,9 @@
 """ The game -> Tic Tac Toe """
+current_player = ""
+
+
+class Board:
+    BOARD = []
 
 
 def output_tictactoe_3x3_console(list_of_cells: list):
@@ -41,10 +46,22 @@ def determine_board_state(all_d):
 
 def main(output_function):
     board = read_data()
+    current_player = "x"
 
     output_function(board)
 
-    determine_board_state(board)
+    state = determine_board_state(board)
+
+    while state != "win":
+        try:
+            get_user_input(board, current_player)
+        except Exception:
+            continue
+
+        current_player = "o" if current_player == "x" else "x"
+        output_function(board)
+
+        state = determine_board_state(board)
 
 
 def read_data():
@@ -59,6 +76,7 @@ def read_data():
                 d_list.append(i)
     except FileNotFoundError:
         print('File position.txt does not exist')
+    Board.BOARD = d_list
     return d_list
 
 
